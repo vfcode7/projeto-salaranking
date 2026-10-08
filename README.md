@@ -13,26 +13,9 @@ Sistema web de gamificação da limpeza das salas de aula, desenvolvido com **Re
 - Persistência no `localStorage`.
 - Layout responsivo para celular e desktop.
 
-## Rodar localmente
+## V1: estrutura base apenas para ver como o sistema vai funcionar
 
-```bash
-npm install
-npm run dev
-```
+## V2: estrutura mais alinhada com oque eu queria, css melhorado e nova funcionalidade: adicionar descrição de avaliação
 
-Para validar a build de produção:
-
-```bash
-npm run build
-```
-
-## Publicar no GitHub
-
-Depois de criar o repositório no GitHub:
-
-```bash
-git remote add origin https://github.com/SEU-USUARIO/cleanclass.git
-git branch -M main
-git push -u origin main
-```
+##V3: sistema final, tudo funcionando alinhado, nova funcionalidade: login
 
