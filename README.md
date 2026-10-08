@@ -17,5 +17,5 @@ Sistema web de gamificação da limpeza das salas de aula, desenvolvido com **Re
 
 ## V2: estrutura mais alinhada com oque eu queria, css melhorado e nova funcionalidade: adicionar descrição de avaliação
 
-##V3: sistema final, tudo funcionando alinhado, nova funcionalidade: login
+## V3: sistema final, tudo funcionando alinhado, nova funcionalidade: login
 
