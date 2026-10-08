@@ -1,6 +1,6 @@
 # CleanClass
 
-Sistema web de gamificação da limpeza das salas de aula, desenvolvido com **React + TypeScript + Vite + CSS puro**.
+Sistema web de gamificação da limpeza das salas de aula, desenvolvido com **React + TypeScript + Vite + CSS**.
 
 ## Funcionalidades
 
@@ -36,4 +36,3 @@ git branch -M main
 git push -u origin main
 ```
 
-O projeto foi pensado para ser apresentado como um MVP acadêmico: sem backend, sem autenticação e sem banco externo. O `localStorage` mantém os dados no navegador.
