@@ -19,3 +19,4 @@ Sistema web de gamificação da limpeza das salas de aula, desenvolvido com **Re
 
 ## V3: sistema final, tudo funcionando alinhado, nova funcionalidade: login
 
+## USO DE IA: cara, usei muita IA principalmente na versão final, eu não sabia nada de react nem typescript então esses 3 dias foram absurdos para minha aprendizagem tentei aprender o maximo que deu, mas IA ajudou demais.
