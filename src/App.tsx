@@ -1,86 +1,146 @@
 import React, { useState } from 'react';
+// IMPORTANTE: Importando o CSS
+import './App.css'; 
+
+interface Avaliacao {
+  id: number;
+  nota: number;
+  descricao: string;
+}
 
 interface Sala {
   id: number;
   nome: string;
-  nota: number;
+  avaliacoes: Avaliacao[];
 }
 
 export default function App() {
   const [salas, setSalas] = useState<Sala[]>([
-    { id: 1, nome: 'Sala 1', nota: 0 },
-    { id: 2, nome: 'Sala 2', nota: 0 },
-    { id: 3, nome: 'Sala 3', nota: 0 },
-    { id: 4, nome: 'Sala 4', nota: 0 },
-    { id: 5, nome: 'Sala 5', nota: 0 },
+    { id: 1, nome: 'Sala 1', avaliacoes: [] },
+    { id: 2, nome: 'Sala 2', avaliacoes: [] },
+    { id: 3, nome: 'Sala 3', avaliacoes: [] },
   ]);
 
-  const [salaSelecionada, setSalaSelecionada] = useState<number>(1);
-  const [notaDada, setNotaDada] = useState<number>(0);
+  const [salaSelecionada, setSalaSelecionada] = useState<number | null>(null);
+  const [notaSelecionada, setNotaSelecionada] = useState<number | null>(null);
+  const [descricao, setDescricao] = useState<string>('');
+  const [salaExpandida, setSalaExpandida] = useState<number | null>(null);
 
-  const handleAvaliar = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const calcularMedia = (avaliacoes: Avaliacao[]): number => {
+    if (avaliacoes.length === 0) return 0;
+    const soma = avaliacoes.reduce((total, av) => total + av.nota, 0);
+    return soma / avaliacoes.length;
+  };
+
+  const handleSalvarAvaliacao = () => {
+    if (salaSelecionada === null || notaSelecionada === null) return;
+
+    const novaAvaliacao: Avaliacao = {
+      id: Date.now(),
+      nota: notaSelecionada,
+      descricao: descricao,
+    };
 
     setSalas((prevSalas) =>
       prevSalas.map((sala) =>
-        sala.id === salaSelecionada ? { ...sala, nota: notaDada } : sala
+        sala.id === salaSelecionada
+          ? { ...sala, avaliacoes: [...sala.avaliacoes, novaAvaliacao] }
+          : sala
       )
     );
+
+    setSalaSelecionada(null);
+    setNotaSelecionada(null);
+    setDescricao('');
   };
 
-  const ranking = [...salas].sort((a, b) => b.nota - a.nota);
+  const ranking = [...salas].sort(
+    (a, b) => calcularMedia(b.avaliacoes) - calcularMedia(a.avaliacoes)
+  );
 
   return (
-    <div style={{ maxWidth: '400px', margin: '20px auto', fontFamily: 'sans-serif' }}>
-      <h2>Avaliação de Salas (0 a 5)</h2>
+    <div className="container">
+      <h2>Avaliação de Salas</h2>
 
-      <form onSubmit={handleAvaliar} style={{ display: 'flex', gap: '8px', marginBottom: '24px', alignItems: 'center' }}>
-        <select
-          value={salaSelecionada}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSalaSelecionada(Number(e.target.value))}
-          style={{ padding: '8px', flex: 1 }}
-        >
+      <div className="secao">
+        <h4>1. Escolha a Sala:</h4>
+        <div className="grupo-botoes">
           {salas.map((sala) => (
-            <option key={sala.id} value={sala.id}>
+            <button
+              key={sala.id}
+              onClick={() => setSalaSelecionada(sala.id)}
+              /* AQUI ESTÁ O SEGREDO DAS CLASSES CONDICIONAIS */
+              className={`botao ${salaSelecionada === sala.id ? 'botao-sala-ativo' : ''}`}
+            >
               {sala.nome}
-            </option>
+            </button>
           ))}
-        </select>
+        </div>
+      </div>
 
-        <select
-          value={notaDada}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setNotaDada(Number(e.target.value))}
-          style={{ padding: '8px' }}
-        >
-          {[0, 1, 2, 3, 4, 5].map((num) => (
-            <option key={num} value={num}>
-              {num}
-            </option>
-          ))}
-        </select>
+      {salaSelecionada !== null && (
+        <div className="secao">
+          <h4>2. Dê a Nota:</h4>
+          <div className="grupo-botoes">
+            {[1, 2, 3, 4, 5].map((nota) => (
+              <button
+                key={nota}
+                onClick={() => setNotaSelecionada(nota)}
+                className={`botao ${notaSelecionada === nota ? 'botao-nota-ativo' : ''}`}
+              >
+                {nota} ⭐
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
-        <button type="submit" style={{ padding: '8px 16px' }}>Dar Nota</button>
-      </form>
+      {notaSelecionada !== null && (
+        <div className="secao">
+          <h4>3. Por que essa nota?</h4>
+          <textarea
+            value={descricao}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescricao(e.target.value)}
+            placeholder="Ex: Chão limpo, mas lousa suja..."
+            className="campo-texto"
+          />
+          <button onClick={handleSalvarAvaliacao} className="botao-salvar">
+            Salvar Avaliação
+          </button>
+        </div>
+      )}
 
-      <h3>🏆 Ranking Atual</h3>
-      <ul style={{ listStyle: 'none', padding: 0 }}>
+      <h3>🏆 Ranking (Média)</h3>
+      <ul className="lista-ranking">
         {ranking.map((sala, index) => (
-          <li
-            key={sala.id}
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              padding: '12px',
-              borderBottom: '1px solid #eee',
-              backgroundColor: index === 0 && sala.nota > 0 ? '#fffbea' : 'transparent',
-            }}
-          >
-            <span>
-              <strong>{index + 1}º</strong> {sala.nome}
-            </span>
-            <span style={{ fontWeight: 'bold', color: '#0056b3' }}>
-              {sala.nota} / 5
-            </span>
+          <li key={sala.id} className="item-ranking">
+            
+            <div 
+              className="cabecalho-sala"
+              onClick={() => setSalaExpandida(salaExpandida === sala.id ? null : sala.id)}
+            >
+              <span>
+                <strong>{index + 1}º {sala.nome}</strong> 
+                <span style={{ color: '#666', marginLeft: '8px', fontSize: '14px' }}>
+                  ({sala.avaliacoes.length} avaliações)
+                </span>
+              </span>
+              <strong>Média: {calcularMedia(sala.avaliacoes).toFixed(1)}</strong>
+            </div>
+
+            {salaExpandida === sala.id && (
+              <div className="historico-avaliacoes">
+                {sala.avaliacoes.length === 0 ? (
+                  <p style={{ color: '#999', margin: 0 }}>Nenhuma avaliação ainda.</p>
+                ) : (
+                  sala.avaliacoes.map((av) => (
+                    <div key={av.id} className="avaliacao-item">
+                      <strong>Nota {av.nota}:</strong> {av.descricao || <em>Sem descrição</em>}
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
           </li>
         ))}
       </ul>

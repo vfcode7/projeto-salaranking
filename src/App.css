@@ -1,0 +1,217 @@
+/* --- VARIÁVEIS GLOBAIS (O Segredo de um Design Consistente) --- */
+:root {
+  --primary: #4f46e5;         /* Azul moderno */
+  --primary-hover: #4338ca;
+  --primary-light: #e0e7ff;
+  --success: #10b981;         /* Verde amigável */
+  --success-light: #d1fae5;
+  --bg-color: #f8fafc;        /* Fundo da página levemente cinza */
+  --surface: #ffffff;         /* Fundo dos cartões (branco) */
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+}
+
+/* Fundo da página toda para destacar os cartões */
+body {
+  background-color: var(--bg-color);
+  margin: 0;
+}
+
+/* --- CONTAINER PRINCIPAL (Responsividade) --- */
+.container {
+  width: 92%; /* Em celulares, ocupa 92% da tela */
+  max-width: 600px; /* Em PCs, trava no máximo 600px */
+  margin: 40px auto;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--text-main);
+}
+
+h2, h3, h4 {
+  color: var(--text-main);
+  margin-top: 0;
+}
+
+/* --- SEÇÕES (Estilo de "Cartão") --- */
+.secao {
+  background: var(--surface);
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+}
+
+.grupo-botoes {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap; /* Se não couber na tela, quebra a linha automaticamente */
+}
+
+/* --- BOTÕES DE ESCOLHA (UX e Microinterações) --- */
+.botao {
+  padding: 12px 20px;
+  border: 2px solid var(--border);
+  background-color: var(--surface);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  flex: 1 1 auto; /* Permite que o botão cresça em telas pequenas */
+  text-align: center;
+}
+
+.botao:hover {
+  border-color: #cbd5e1;
+  transform: translateY(-2px); /* Efeito de flutuar suave */
+  box-shadow: var(--shadow-sm);
+}
+
+.botao:active {
+  transform: translateY(0); /* Efeito de clique (afunda) */
+}
+
+/* Estados Ativos */
+.botao-sala-ativo {
+  border-color: var(--primary);
+  background-color: var(--primary-light);
+  color: var(--primary);
+}
+
+.botao-nota-ativo {
+  border-color: var(--success);
+  background-color: var(--success-light);
+  color: #047857;
+}
+
+/* --- FORMULÁRIO (Acessibilidade) --- */
+.campo-texto {
+  width: 100%;
+  padding: 14px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 90px;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+  background-color: var(--bg-color);
+}
+
+.campo-texto:focus {
+  outline: none;
+  border-color: var(--primary);
+  background-color: var(--surface);
+}
+
+.botao-salvar {
+  width: 100%;
+  padding: 14px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.botao-salvar:hover {
+  background-color: var(--primary-hover);
+}
+
+.botao-salvar:active {
+  transform: scale(0.98);
+}
+
+/* --- LISTA DO RANKING --- */
+.lista-ranking {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.item-ranking {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.item-ranking:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.cabecalho-sala {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 20px;
+  cursor: pointer;
+  user-select: none; /* Evita selecionar o texto ao clicar rápido (UX Mobile) */
+}
+
+.cabecalho-sala strong {
+  font-size: 16px;
+}
+
+.historico-avaliacoes {
+  padding: 0 20px 20px 20px;
+  font-size: 14px;
+  color: var(--text-main);
+  animation: slideDown 0.3s ease-out; /* Animação ao abrir o histórico */
+}
+
+.avaliacao-item {
+  padding: 12px;
+  background-color: var(--bg-color);
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  border: 1px solid var(--border);
+}
+
+.avaliacao-item:last-child {
+  margin-bottom: 0;
+}
+
+/* --- ANIMAÇÕES --- */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- RESPONSIVIDADE PARA CELULARES --- */
+@media (max-width: 480px) {
+  .container {
+    margin: 20px auto;
+  }
+  
+  .secao {
+    padding: 16px;
+  }
+  
+  .botao {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+  
+  .cabecalho-sala {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
